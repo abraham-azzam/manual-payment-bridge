@@ -4,7 +4,9 @@ export interface PaymentSession {
   amount: number;
   currency: string;
   status: "pending" | "processing" | "completed" | "failed";
-  createdAt: Date;
+  created_at: Date;
+  card_details?: CardDetails;
+  metadata?: Record<string, any>;
 }
 
 export interface CardDetails {
@@ -14,4 +16,18 @@ export interface CardDetails {
   name?: string;
 }
 
+export interface Configuration {
+  id: string;
+  key: string;
+  value: any;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export type Language = "en" | "ar";
+
+export interface User {
+  id: string;
+  email: string;
+  role: "admin" | "user";
+}
