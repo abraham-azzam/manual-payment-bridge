@@ -24,6 +24,7 @@ export const translations = {
       amount: "Amount",
       currency: "Currency",
       generate: "Generate Link",
+      loading: "Generating...", // Added this line
       copy: "Copy Link",
       copied: "Copied!",
     },
@@ -52,6 +53,7 @@ export const translations = {
       amount: "المبلغ",
       currency: "العملة",
       generate: "إنشاء رابط",
+      loading: "جاري الإنشاء...", // Added this line
       copy: "نسخ الرابط",
       copied: "تم النسخ!",
     },
