@@ -1,10 +1,10 @@
 
-import { SessionCreator } from "@/components/SessionCreator";
+import { AdminDashboard } from "@/components/AdminDashboard";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
-      <SessionCreator />
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+      <AdminDashboard />
     </div>
   );
 };
