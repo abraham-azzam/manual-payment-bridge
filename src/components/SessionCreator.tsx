@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { translations } from "@/lib/i18n";
+import { supabase } from "@/lib/supabase";
 
 export function SessionCreator() {
   const [amount, setAmount] = useState("");
@@ -12,16 +13,43 @@ export function SessionCreator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [sessionLink, setSessionLink] = useState("");
   const { toast } = useToast();
-  const t = translations.en.admin; // For now, hardcoded to English
+  const t = translations.en.admin;
 
   const generateLink = async () => {
     setIsGenerating(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const sessionId = Math.random().toString(36).substr(2, 9);
-    const link = `${window.location.origin}/payment/${sessionId}`;
-    setSessionLink(link);
-    setIsGenerating(false);
+    try {
+      // Create a new payment session in Supabase
+      const { data: session, error } = await supabase
+        .from('payment_sessions')
+        .insert([
+          {
+            amount: parseFloat(amount),
+            currency: currency,
+            status: 'pending'
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const link = `${window.location.origin}/payment/${session.id}`;
+      setSessionLink(link);
+      
+      toast({
+        title: "Success",
+        description: "Payment session created successfully",
+      });
+    } catch (error) {
+      console.error('Error creating session:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create payment session",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const copyLink = () => {
@@ -45,6 +73,8 @@ export function SessionCreator() {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0.00"
+            min="0"
+            step="0.01"
             className="input-field"
           />
         </div>
@@ -53,7 +83,7 @@ export function SessionCreator() {
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="input-field"
+            className="w-full rounded-md border border-input bg-background px-3 py-2"
           >
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
@@ -61,22 +91,23 @@ export function SessionCreator() {
           </select>
         </div>
         <Button
-          className="w-full btn-primary"
+          className="w-full"
           onClick={generateLink}
-          disabled={isGenerating || !amount}
+          disabled={isGenerating || !amount || parseFloat(amount) <= 0}
         >
           {isGenerating ? t.loading : t.generate}
         </Button>
         {sessionLink && (
           <div className="mt-4 space-y-2">
-            <input
+            <Input
               type="text"
               value={sessionLink}
               readOnly
               className="input-field"
             />
             <Button
-              className="w-full btn-secondary"
+              className="w-full"
+              variant="outline"
               onClick={copyLink}
             >
               {t.copy}
