@@ -1,9 +1,8 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Use empty strings as fallbacks to prevent immediate crashes
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = 'https://lpxzidmeawtdbkjeybdp.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxweHppZG1lYXd0ZGJramV5YmRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAwNTQ2ODAsImV4cCI6MjA1NTYzMDY4MH0.Q1XvGwe8k7rj8RiBHq7NQH9SrPOpsYqsUNB4l7-Buu8';
 
-// Create the client even with empty values - it will just fail gracefully on API calls
+// Create Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
