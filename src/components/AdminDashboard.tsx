@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { translations } from "@/lib/i18n";
 import { SessionCreator } from "@/components/SessionCreator";
+import { SessionsList } from "@/components/SessionsList";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronRight, Settings } from "lucide-react";
@@ -39,10 +40,7 @@ export const AdminDashboard = () => {
             <CardTitle>Recent Sessions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {/* We'll implement the sessions list in the next step */}
-              <p className="text-sm text-muted-foreground">Loading sessions...</p>
-            </div>
+            <SessionsList />
           </CardContent>
         </Card>
       </div>
